@@ -30,21 +30,40 @@ _REFUND = {"refund", "reimburse", "chargeback"}
 _SEND = {"send", "email", "post message", "publish", "webhook", "notify"}
 
 
+def _tokens(operation: str) -> list[str]:
+    """Split an operation name into word tokens.
+
+    ``send_payment`` -> ["send", "payment"], ``processPayment`` ->
+    ["process", "payment"], ``getUserById`` -> ["get", "user", "by", "id"].
+    """
+    spaced = re.sub(r"[_\-\s]+", " ", operation.strip().lower())
+    spaced = re.sub(r"(?<=[a-z0-9])(?=[A-Z])", " ", spaced)
+    return spaced.split()
+
+
 def classify_operation(operation: str) -> str:
-    """Map a free-form operation string to a policy class."""
-    op = operation.strip().lower()
-    if op in _READ:
-        return "read"
-    if op in _DELETE:
+    """Map a free-form operation string to a policy class.
+
+    Accepts the canonical verbs (``payment``, ``refund``, ``delete`` …) and
+    real-world tool names (``send_payment``, ``stripe_refund``,
+    ``delete_user``): the name is tokenised and the highest-risk class found
+    wins — payment/refund outrank external_send, which outranks delete,
+    write, then read. A name with no recognisable token stays ``other``.
+    """
+    tokens = _tokens(operation)
+    token_set = set(tokens)
+    if token_set & (_PAYMENT | _REFUND):
+        return "refund" if token_set & _REFUND else "payment"
+    if token_set & _DELETE:
         return "delete"
-    if op in _PAYMENT:
-        return "payment"
-    if op in _REFUND:
-        return "refund"
-    if op in _SEND:
+    if token_set & _SEND:
         return "external_send"
-    if op in _WRITE:
+    if token_set & _WRITE:
         return "write"
+    if token_set & _READ:
+        return "read"
+    if token_set & {"execute", "run", "call", "invoke"}:
+        return "other"
     return "other"
 
 
@@ -284,7 +303,8 @@ def detect_taint(action: ActionRequest, policy: Policy) -> list[Finding]:
 
 def detect_destructive(action: ActionRequest, policy: Policy) -> list[Finding]:
     op = action.operation.strip().lower()
-    if op not in policy.irreversible_operations and classify_operation(op) != "delete":
+    op_tokens = set(_tokens(op))
+    if not (op_tokens & policy.irreversible_operations) and classify_operation(op) != "delete":
         return []
     params = action.parameters
     confirmed = params.get("confirmed") is True or params.get("dry_run") is True

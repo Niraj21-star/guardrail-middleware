@@ -11,6 +11,7 @@ project's red-team benchmark.
 from __future__ import annotations
 
 import copy
+import re
 from pathlib import Path
 from typing import Any, Optional, Union
 
@@ -21,6 +22,7 @@ DEFAULT_POLICY: dict[str, Any] = {
         "write": ["*"],
         "delete": ["admin", "operator"],
         "payment": ["admin", "finance"],
+        "refund": ["admin", "finance"],
         "external_send": ["admin", "operator", "support"],
     },
     # Money limits (in the policy's currency unit, INR by default).
@@ -110,7 +112,12 @@ class Policy:
 
     @property
     def irreversible_operations(self) -> set[str]:
-        return {str(o).lower() for o in self.get("irreversible_operations", default=[])}
+        ops = set()
+        for raw in self.get("irreversible_operations", default=[]):
+            for token in re.split(r"[_\-\s]+", str(raw).lower()):
+                if token:
+                    ops.add(token)
+        return ops
 
     @property
     def internal_hosts(self) -> list[str]:

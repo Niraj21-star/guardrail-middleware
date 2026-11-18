@@ -27,7 +27,7 @@ from .engine import Guardrail
 from .models import ActionRequest, Decision, Finding, TriggeredBy, Verdict
 from .policy import DEFAULT_POLICY, Policy
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 
 __all__ = [
     "Guardrail",

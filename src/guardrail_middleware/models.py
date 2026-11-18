@@ -64,14 +64,21 @@ class ActionRequest:
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> "ActionRequest":
-        triggered = data.get("triggered_by", TriggeredBy.USER)
+        triggered = data.get("triggered_by", data.get("source_type", TriggeredBy.USER))
         if isinstance(triggered, str):
             triggered = TriggeredBy(triggered.lower())
+        # Convenience aliases: an action that names only a tool is classified
+        # from the tool name; `params` is accepted for `parameters`.
+        operation = data.get("operation") or data.get("tool") or ""
+        parameters = data.get("parameters")
+        if parameters is None:
+            parameters = data.get("params")
+        target = data.get("target_resource") or data.get("destination") or ""
         return cls(
             tool=str(data.get("tool", "")),
-            operation=str(data.get("operation", "")),
-            target_resource=str(data.get("target_resource", "")),
-            parameters=dict(data.get("parameters") or {}),
+            operation=str(operation),
+            target_resource=str(target),
+            parameters=dict(parameters or {}),
             agent_id=str(data.get("agent_id", "agent")),
             agent_role=str(data.get("agent_role", "agent")),
             stated_reason=str(data.get("stated_reason", "")),

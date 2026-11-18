@@ -31,6 +31,8 @@ decision.explanation
 
 Works anywhere an agent proposes an action: LangChain/LangGraph tool wrappers, MCP servers, custom agent loops, job queues.
 
+Tool names work as-is, too — if an action names only a tool, GuardRail classifies it from the name: `send_payment`, `stripe_refund`, `delete_user` and `get_order_status` are all understood (`params` is accepted as an alias for `parameters`, `source_type` for `triggered_by`).
+
 ## Quick start — FastAPI / Starlette middleware
 
 ```python
@@ -113,7 +115,7 @@ AuditLog("audit.jsonl").verify()   # {'ok': True, 'entries': 128, 'broken_at': N
 
 ```bash
 python examples/demo.py     # 5 scenarios, all four verdicts, audit verification
-pytest                      # 18 tests: engine, detectors, middleware, decorator, audit tampering
+pytest                      # 20 tests: engine, detectors, middleware, decorator, audit tampering
 ```
 
 ## Where this comes from
@@ -122,7 +124,7 @@ pytest                      # 18 tests: engine, detectors, middleware, decorator
 
 ## Status & honesty notes
 
-- v0.1.0, alpha. The API may still move.
+- v0.1.1, alpha. The API may still move.
 - Detectors are deterministic heuristics, not a proof of safety — pair them with least-privilege credentials and human review for high-impact tools.
 - Plan-level (multi-step) validation lives in the main GuardRail project, not in this package yet.
 
