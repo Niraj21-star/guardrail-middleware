@@ -9,6 +9,8 @@ pip install guardrail-middleware            # core, zero dependencies
 pip install guardrail-middleware[fastapi]   # + FastAPI/Starlette middleware
 ```
 
+[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Niraj21-star/guardrail-middleware/blob/main/examples/guardrail_middleware_demo.ipynb) Try the 2-minute demo in your browser: five scenarios, the injection attack up close, and an editable cell to test your own cases.
+
 ## Quick start: framework-agnostic
 
 ```python
