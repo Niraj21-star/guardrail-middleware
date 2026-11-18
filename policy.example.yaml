@@ -1,0 +1,60 @@
+# Example GuardRail policy. Copy, edit, and load with:
+#   Policy.from_yaml("policy.yaml")  ->  Guardrail(policy=...)
+# Anything you omit falls back to the built-in defaults.
+
+role_permissions:
+  read: ["*"]
+  write: ["*"]
+  delete: ["admin", "operator"]
+  payment: ["admin", "finance"]
+  external_send: ["admin", "operator", "support"]
+
+approval_limits:
+  payment:
+    auto_approve_max: 5000
+    block_above: 50000
+  refund:
+    auto_approve_max: 10000
+    block_above: 100000
+
+bulk_operation:
+  auto_approve_max_records: 50
+  escalate_above_records: 500
+
+hard_block_amount: 100000
+
+pii_fields:
+  - email
+  - phone
+  - address
+  - ssn
+  - national_id
+  - passport
+  - credit_card
+  - bank_account
+  - date_of_birth
+  - salary
+  - medical
+
+secret_fields:
+  - api_key
+  - password
+  - secret
+  - token
+  - private_key
+
+irreversible_operations:
+  - delete
+  - drop
+  - purge
+  - truncate
+  - wipe
+  - send
+
+internal_hosts:
+  - localhost
+  - 127.0.0.1
+  - internal
+  - .local
+  - .corp
+  - .internal
