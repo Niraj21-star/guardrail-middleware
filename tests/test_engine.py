@@ -1,4 +1,4 @@
-"""Engine tests — one per detector, plus verdict-priority and audit checks."""
+"""Engine tests: one per detector, plus verdict-priority and audit checks."""
 
 import pytest
 
@@ -125,7 +125,7 @@ def test_audit_chain_detects_tampering(tmp_path):
 
 def test_tool_name_only_payment_from_untrusted_source_blocks(guard):
     """Regression (found verifying the published v0.1.0): an action that
-    names only a tool — no canonical `operation` — must still be classified.
+    names only a tool (no canonical `operation`) must still be classified.
     A ₹250,000 payment triggered by an injected email is a BLOCK."""
     d = guard.evaluate({
         "tool": "send_payment", "agent_role": "support_agent",

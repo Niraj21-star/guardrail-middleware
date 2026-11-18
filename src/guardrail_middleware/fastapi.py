@@ -2,7 +2,7 @@
 
 Two ways to protect an app:
 
-1. **Middleware** — guard specific routes that execute agent tool calls. The
+1. **Middleware**: guard specific routes that execute agent tool calls. The
    request body is read as an action (``tool``, ``operation``,
    ``target_resource``, ``parameters``, ...). Blocked or escalated actions
    never reach your handler::
@@ -14,7 +14,7 @@ Two ways to protect an app:
    ``X-Guardrail-Verdict`` and ``X-Guardrail-Risk``. A stopped action returns
    HTTP 403 with the full decision as JSON.
 
-2. **Decorator** — guard a plain Python function that performs a tool call::
+2. **Decorator**: guard a plain Python function that performs a tool call::
 
        @guard_tool(guard)
        def send_payment(amount: int, to: str): ...
@@ -79,7 +79,7 @@ class GuardrailMiddleware(BaseHTTPMiddleware):
                 raise ValueError("action body must be a JSON object")
             action = ActionRequest.from_dict(payload)
         except Exception:
-            # Not an action-shaped body — not ours to judge; pass through.
+            # Not an action-shaped body, so it is not ours to judge. Pass through.
             return await call_next(request)
 
         if not action.tool and not action.operation:

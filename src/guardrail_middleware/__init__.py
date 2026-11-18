@@ -1,8 +1,8 @@
-"""guardrail-middleware — runtime authorization for AI agent tool calls.
+"""guardrail-middleware: runtime authorization for AI agent tool calls.
 
 GuardRail sits between an AI agent and its tools. Every proposed action is
-checked against a policy — authorization, prompt-injection and taint
-detectors, financial and bulk limits — *before* it executes, and every
+checked against a policy (authorization, prompt-injection and taint
+detectors, financial and bulk limits) *before* it executes, and every
 decision is written to a tamper-evident, hash-chained audit log.
 
 Quick start::

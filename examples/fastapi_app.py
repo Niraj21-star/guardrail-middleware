@@ -9,7 +9,7 @@ Then try:
     curl -X POST localhost:8000/tools/execute -H 'Content-Type: application/json' \
       -d '{"tool":"db","operation":"read","target_resource":"users/42"}'
 
-    # blocked — role 'intern' may not delete
+    # blocked: role 'intern' may not delete
     curl -X POST localhost:8000/tools/execute -H 'Content-Type: application/json' \
       -d '{"tool":"db","operation":"delete","target_resource":"users","agent_role":"intern"}'
 """

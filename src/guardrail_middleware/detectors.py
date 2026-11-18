@@ -1,8 +1,8 @@
 """Deterministic detectors for guardrail-middleware.
 
 Each detector inspects one :class:`ActionRequest` and returns zero or more
-:class:`Finding` objects. Detectors are pure functions of (action, policy) —
-no network, no LLM — so a decision is reproducible and fast enough to sit in
+:class:`Finding` objects. Detectors are pure functions of (action, policy), with
+no network and no LLM, so a decision is reproducible and fast enough to sit in
 front of every tool call.
 
 The set mirrors the attack classes from the GuardRail red-team benchmark:
@@ -47,7 +47,7 @@ def classify_operation(operation: str) -> str:
     Accepts the canonical verbs (``payment``, ``refund``, ``delete`` …) and
     real-world tool names (``send_payment``, ``stripe_refund``,
     ``delete_user``): the name is tokenised and the highest-risk class found
-    wins — payment/refund outrank external_send, which outranks delete,
+    wins: payment/refund outrank external_send, which outranks delete,
     write, then read. A name with no recognisable token stays ``other``.
     """
     tokens = _tokens(operation)
@@ -313,7 +313,7 @@ def detect_destructive(action: ActionRequest, policy: Policy) -> list[Finding]:
         return [Finding(
             detector="destructive",
             severity="high",
-            message="Delete operation has no target resource — scope is unbounded.",
+            message="Delete operation has no target resource, so its scope is unbounded.",
             effect="escalate",
         )]
     if not confirmed and not backed_up:

@@ -1,4 +1,4 @@
-"""Runnable demo — no server, no API keys.
+"""Runnable demo: no server, no API keys.
 
     python examples/demo.py
 

@@ -3,7 +3,7 @@
 Runs every detector over a proposed action, folds the findings into a single
 verdict, and (optionally) writes the decision to the hash-chained audit log.
 
-Verdict rules, in priority order — earlier rules win:
+Verdict rules, in priority order (earlier rules win):
 
 1. Any finding with effect ``block``        → BLOCK
 2. Any finding with effect ``escalate``     → ESCALATE_TO_HUMAN
@@ -84,7 +84,7 @@ class Guardrail:
                     message=f"GuardRail evaluation failed ({exc!r}); failing closed.",
                     effect="escalate",
                 )],
-                explanation="Evaluation error — escalated to a human (fail-closed).",
+                explanation="Evaluation error. Escalated to a human (fail-closed).",
             )
         if self.audit_log is not None:
             decision.audit_hash = self.audit_log.record(
