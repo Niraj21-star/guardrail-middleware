@@ -124,6 +124,11 @@ pytest                      # 20 tests: engine, detectors, middleware, decorator
 
 `guardrail-middleware` is the reusable enforcement core extracted from **[GuardRail](https://github.com/Niraj21-star/guard_ai)**, a runtime action-authorization and behavioral-safety layer for agentic AI built at Infosys Ignite EngNext 2026 (special recognition), where the full system adds multi-step plan validation, an action-passport execution gateway, and a 42-scenario adversarial red-team benchmark. It packages the single-action checkpoint from that system so any agent stack can adopt it in minutes.
 
+## Papers
+
+- Niraj Sanjay Karnawat, Ayush Patil, Kunal Chaudhari. *GuardRail: Runtime Action Authorization and Behavioral Safety for Agentic AI Systems.* Zenodo, 2026. https://doi.org/10.5281/zenodo.24466955
+- Niraj Sanjay Karnawat. *GuardHarness: A Live, Margin-Preserving Enforcement Gate for Self-Improving Agent Harnesses.* Zenodo, 2026. https://doi.org/10.5281/zenodo.24412247 — related work: the same allow / escalate / block discipline applied to agents that rewrite their own harness.
+
 ## Status & honesty notes
 
 - v0.1.1, alpha. The API may still move.
